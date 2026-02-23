@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +22,13 @@
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -48,11 +55,13 @@
             background: var(--bg-card);
             border-bottom: 1px solid var(--bg-surface);
         }
+
         .top-bar .brand {
             font-size: 14px;
             font-weight: 600;
             color: var(--emerald);
         }
+
         .timer-display {
             font-family: 'Courier New', monospace;
             font-size: 28px;
@@ -60,6 +69,7 @@
             color: var(--cyan);
             letter-spacing: 2px;
         }
+
         .timer-controls button {
             background: var(--bg-surface);
             border: none;
@@ -70,7 +80,10 @@
             margin-left: 6px;
             font-size: 13px;
         }
-        .timer-controls button:hover { color: var(--text-primary); }
+
+        .timer-controls button:hover {
+            color: var(--text-primary);
+        }
 
         /* ─── Slide Preview ──────────────────────────────── */
         .slide-preview {
@@ -80,6 +93,7 @@
             padding: 16px 20px;
             overflow: hidden;
         }
+
         .preview-main {
             flex: 1;
             background: #000;
@@ -90,25 +104,29 @@
             overflow: hidden;
             position: relative;
         }
+
         .preview-main img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
+
         .preview-label {
             position: absolute;
             top: 8px;
             left: 12px;
             font-size: 11px;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         .preview-row {
             display: flex;
             gap: 12px;
             height: 120px;
         }
+
         .preview-thumb {
             flex: 1;
             background: var(--bg-card);
@@ -121,11 +139,13 @@
             border: 1px solid var(--bg-surface);
             cursor: pointer;
         }
+
         .preview-thumb img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
+
         .preview-thumb .thumb-label {
             position: absolute;
             bottom: 4px;
@@ -144,16 +164,19 @@
             flex-direction: column;
             gap: 16px;
         }
+
         .notes-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
+
         .notes-header h2 {
             font-size: 16px;
             font-weight: 600;
             color: var(--emerald);
         }
+
         .slide-badge {
             background: var(--bg-surface);
             padding: 4px 12px;
@@ -161,11 +184,13 @@
             font-size: 13px;
             color: var(--text-secondary);
         }
+
         .note-title {
             font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
         }
+
         .note-time {
             font-size: 13px;
             color: var(--cyan);
@@ -173,12 +198,14 @@
             align-items: center;
             gap: 6px;
         }
+
         .note-points {
             list-style: none;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
+
         .note-points li {
             padding: 10px 14px;
             background: var(--bg-surface);
@@ -187,11 +214,13 @@
             line-height: 1.5;
             border-left: 3px solid var(--emerald);
         }
+
         .nav-controls {
             display: flex;
             gap: 10px;
             margin-top: auto;
         }
+
         .nav-controls button {
             flex: 1;
             padding: 12px;
@@ -204,15 +233,18 @@
             cursor: pointer;
             transition: all 0.15s ease;
         }
+
         .nav-controls button:hover {
             border-color: var(--emerald);
             background: var(--bg-surface);
         }
+
         .nav-controls .btn-next {
             background: var(--emerald);
             color: var(--bg-primary);
             border-color: var(--emerald);
         }
+
         .nav-controls .btn-next:hover {
             background: #2bc48a;
         }
@@ -228,6 +260,7 @@
             background: var(--bg-card);
             border-top: 1px solid var(--bg-surface);
         }
+
         .progress-dot {
             width: 8px;
             height: 8px;
@@ -236,15 +269,18 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
         .progress-dot.active {
             background: var(--emerald);
             transform: scale(1.4);
         }
+
         .progress-dot.past {
             background: rgba(52, 211, 153, 0.3);
         }
     </style>
 </head>
+
 <body>
     <div class="presenter-layout">
         <!-- Top Bar -->
@@ -465,7 +501,7 @@
             else if (e.key === 'Home') { e.preventDefault(); goToSlide(1); }
             else if (e.key === 'End') { e.preventDefault(); goToSlide(TOTAL_SLIDES); }
             else if (e.key === 'f' || e.key === 'F') {
-                if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => { });
                 else document.exitFullscreen();
             } else if (e.key === 't' || e.key === 'T') {
                 toggleTimer();
@@ -477,4 +513,5 @@
         setInterval(pollSlide, 1000);
     </script>
 </body>
+
 </html>

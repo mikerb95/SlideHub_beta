@@ -75,7 +75,7 @@ const SyncSlide = {
      */
     toggleFullscreen() {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {});
+            document.documentElement.requestFullscreen().catch(() => { });
         } else {
             document.exitFullscreen();
         }

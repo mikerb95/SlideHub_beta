@@ -44,7 +44,8 @@ public class ConfigService {
         try {
             ClassPathResource resource = new ClassPathResource(presenterNotesPath);
             try (InputStream is = resource.getInputStream()) {
-                presenterNotes = objectMapper.readValue(is, new TypeReference<>() {});
+                presenterNotes = objectMapper.readValue(is, new TypeReference<>() {
+                });
                 log.info("Loaded presenter notes for {} slides", presenterNotes.size());
             }
         } catch (IOException e) {
@@ -56,7 +57,8 @@ public class ConfigService {
         try {
             ClassPathResource resource = new ClassPathResource(demoLinksPath);
             try (InputStream is = resource.getInputStream()) {
-                demoLinks = objectMapper.readValue(is, new TypeReference<>() {});
+                demoLinks = objectMapper.readValue(is, new TypeReference<>() {
+                });
                 log.info("Loaded demo links configuration");
             }
         } catch (IOException e) {

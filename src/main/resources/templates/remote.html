@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -20,7 +21,13 @@
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -38,16 +45,19 @@
             padding: 20px 16px 12px;
             text-align: center;
         }
+
         .remote-header h1 {
             font-size: 18px;
             font-weight: 600;
             color: var(--emerald);
         }
+
         .remote-header .slide-info {
             font-size: 42px;
             font-weight: 700;
             margin: 12px 0 4px;
         }
+
         .remote-header .slide-total {
             font-size: 14px;
             color: var(--text-secondary);
@@ -61,6 +71,7 @@
             padding: 12px 16px;
             flex-wrap: wrap;
         }
+
         .dot {
             width: 10px;
             height: 10px;
@@ -69,11 +80,13 @@
             transition: all 0.2s ease;
             cursor: pointer;
         }
+
         .dot.active {
             background: var(--emerald);
             box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
             transform: scale(1.3);
         }
+
         .dot.past {
             background: rgba(52, 211, 153, 0.3);
         }
@@ -87,6 +100,7 @@
             gap: 16px;
             padding: 20px 16px;
         }
+
         .nav-btn {
             width: 100%;
             max-width: 160px;
@@ -104,13 +118,20 @@
             -webkit-user-select: none;
             user-select: none;
         }
+
         .nav-btn:active {
             transform: scale(0.93);
             background: var(--bg-surface);
             border-color: var(--emerald);
         }
-        .nav-btn.prev { color: var(--cyan); }
-        .nav-btn.next { color: var(--emerald); }
+
+        .nav-btn.prev {
+            color: var(--cyan);
+        }
+
+        .nav-btn.next {
+            color: var(--emerald);
+        }
 
         /* Quick nav */
         .quick-nav {
@@ -120,6 +141,7 @@
             justify-content: center;
             flex-wrap: wrap;
         }
+
         .quick-btn {
             width: 44px;
             height: 44px;
@@ -135,12 +157,16 @@
             cursor: pointer;
             transition: all 0.15s ease;
         }
+
         .quick-btn.active {
             background: var(--emerald);
             color: var(--bg-primary);
             border-color: var(--emerald);
         }
-        .quick-btn:active { transform: scale(0.9); }
+
+        .quick-btn:active {
+            transform: scale(0.9);
+        }
 
         /* Footer bar */
         .footer-bar {
@@ -150,10 +176,12 @@
             align-items: center;
             border-top: 1px solid var(--bg-surface);
         }
+
         .footer-bar .status {
             font-size: 12px;
             color: var(--text-secondary);
         }
+
         .footer-bar .status .dot-indicator {
             display: inline-block;
             width: 8px;
@@ -163,10 +191,19 @@
             margin-right: 6px;
             animation: pulse 2s infinite;
         }
+
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
         }
+
         .fullscreen-btn {
             background: none;
             border: 1px solid var(--bg-surface);
@@ -180,12 +217,16 @@
         /* Swipe overlay */
         #swipe-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             z-index: 100;
             pointer-events: none;
         }
     </style>
 </head>
+
 <body>
     <div class="remote-header">
         <h1><i class="fas fa-satellite-dish"></i> SyncSlide Remote</h1>
@@ -365,7 +406,7 @@
 
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
+                document.documentElement.requestFullscreen().catch(() => { });
             } else {
                 document.exitFullscreen();
             }
@@ -378,4 +419,5 @@
         setInterval(pollSlide, 800);
     </script>
 </body>
+
 </html>

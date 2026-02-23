@@ -60,8 +60,7 @@ public class SlideService {
         // Fallback: try filesystem directly
         File dir = new File("src/main/resources/" + slidesDir);
         if (dir.exists() && dir.isDirectory()) {
-            File[] files = dir.listFiles((d, name) ->
-                    name.matches("Slide\\d+\\.(png|PNG|jpg|jpeg|gif|svg)"));
+            File[] files = dir.listFiles((d, name) -> name.matches("Slide\\d+\\.(png|PNG|jpg|jpeg|gif|svg)"));
             return files != null ? files.length : 0;
         }
 
@@ -78,22 +77,26 @@ public class SlideService {
     }
 
     public SlideState setCurrentSlide(int slide) {
-        if (slide < 1) slide = 1;
-        if (slide > totalSlides) slide = totalSlides;
+        if (slide < 1)
+            slide = 1;
+        if (slide > totalSlides)
+            slide = totalSlides;
         currentSlide.set(slide);
         return new SlideState(currentSlide.get());
     }
 
     public SlideState nextSlide() {
         int next = currentSlide.get() + 1;
-        if (next > totalSlides) next = totalSlides;
+        if (next > totalSlides)
+            next = totalSlides;
         currentSlide.set(next);
         return new SlideState(currentSlide.get());
     }
 
     public SlideState previousSlide() {
         int prev = currentSlide.get() - 1;
-        if (prev < 1) prev = 1;
+        if (prev < 1)
+            prev = 1;
         currentSlide.set(prev);
         return new SlideState(currentSlide.get());
     }

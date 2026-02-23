@@ -60,8 +60,8 @@ class ApiControllerTest {
         when(slideService.setCurrentSlide(anyInt())).thenReturn(new SlideState(5));
 
         mockMvc.perform(post("/api/slide")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"slide\": 5}"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"slide\": 5}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.slide").value(5));
     }
@@ -101,8 +101,8 @@ class ApiControllerTest {
         when(slideService.setDemoState(org.mockito.ArgumentMatchers.any())).thenReturn(urlState);
 
         mockMvc.perform(post("/api/demo")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"mode\": \"url\", \"url\": \"/map\"}"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"mode\": \"url\", \"url\": \"/map\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.mode").value("url"))
                 .andExpect(jsonPath("$.url").value("/map"));

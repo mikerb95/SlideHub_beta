@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,13 @@
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -49,11 +56,13 @@
             background: var(--bg-card);
             border-bottom: 1px solid var(--bg-surface);
         }
+
         .top-bar .brand {
             font-weight: 600;
             font-size: 15px;
             color: var(--emerald);
         }
+
         .top-bar .slide-badge {
             background: var(--bg-surface);
             padding: 6px 16px;
@@ -67,6 +76,7 @@
             padding: 16px;
             overflow-y: auto;
         }
+
         .thumbnails-section h3 {
             font-size: 13px;
             text-transform: uppercase;
@@ -74,11 +84,13 @@
             color: var(--text-secondary);
             margin-bottom: 12px;
         }
+
         .thumb-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 12px;
         }
+
         .thumb-card {
             background: var(--bg-card);
             border: 2px solid var(--bg-surface);
@@ -88,30 +100,35 @@
             transition: all 0.2s;
             position: relative;
         }
+
         .thumb-card:hover {
             border-color: var(--cyan);
             transform: translateY(-2px);
         }
+
         .thumb-card.active {
             border-color: var(--emerald);
             box-shadow: 0 0 16px rgba(52, 211, 153, 0.2);
         }
+
         .thumb-card img {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
             background: #000;
         }
+
         .thumb-card .thumb-number {
             position: absolute;
             top: 6px;
             left: 8px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             padding: 2px 8px;
             border-radius: 6px;
             font-size: 12px;
             font-weight: 600;
         }
+
         .thumb-card .thumb-title {
             padding: 6px 10px;
             font-size: 12px;
@@ -128,15 +145,18 @@
             padding: 16px;
             overflow-y: auto;
         }
+
         .link-group {
             margin-bottom: 20px;
         }
+
         .link-group-title {
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 10px;
             color: var(--text-primary);
         }
+
         .link-item {
             display: flex;
             align-items: center;
@@ -150,10 +170,12 @@
             text-decoration: none;
             color: var(--text-primary);
         }
+
         .link-item:hover {
             background: rgba(52, 211, 153, 0.1);
             border-left: 3px solid var(--emerald);
         }
+
         .link-icon {
             width: 36px;
             height: 36px;
@@ -164,17 +186,47 @@
             font-size: 16px;
             flex-shrink: 0;
         }
-        .link-icon.emerald { background: rgba(52,211,153,0.15); color: var(--emerald); }
-        .link-icon.cyan { background: rgba(34,211,238,0.15); color: var(--cyan); }
-        .link-icon.blue { background: rgba(96,165,250,0.15); color: var(--blue); }
-        .link-icon.purple { background: rgba(167,139,250,0.15); color: var(--purple); }
-        .link-icon.amber { background: rgba(251,191,36,0.15); color: var(--amber); }
-        .link-icon.rose { background: rgba(251,113,133,0.15); color: var(--rose); }
-        .link-icon.slate { background: rgba(148,163,184,0.15); color: var(--text-secondary); }
+
+        .link-icon.emerald {
+            background: rgba(52, 211, 153, 0.15);
+            color: var(--emerald);
+        }
+
+        .link-icon.cyan {
+            background: rgba(34, 211, 238, 0.15);
+            color: var(--cyan);
+        }
+
+        .link-icon.blue {
+            background: rgba(96, 165, 250, 0.15);
+            color: var(--blue);
+        }
+
+        .link-icon.purple {
+            background: rgba(167, 139, 250, 0.15);
+            color: var(--purple);
+        }
+
+        .link-icon.amber {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--amber);
+        }
+
+        .link-icon.rose {
+            background: rgba(251, 113, 133, 0.15);
+            color: var(--rose);
+        }
+
+        .link-icon.slate {
+            background: rgba(148, 163, 184, 0.15);
+            color: var(--text-secondary);
+        }
+
         .link-info .link-title {
             font-size: 13px;
             font-weight: 600;
         }
+
         .link-info .link-desc {
             font-size: 11px;
             color: var(--text-secondary);
@@ -187,11 +239,13 @@
             background: var(--bg-surface);
             border-radius: 10px;
         }
+
         .demo-controls h4 {
             font-size: 13px;
             color: var(--cyan);
             margin-bottom: 8px;
         }
+
         .demo-mode-btn {
             width: 100%;
             padding: 8px;
@@ -204,13 +258,18 @@
             margin-bottom: 6px;
             transition: all 0.15s;
         }
+
         .demo-mode-btn.active {
             border-color: var(--emerald);
             color: var(--emerald);
         }
-        .demo-mode-btn:hover { color: var(--text-primary); }
+
+        .demo-mode-btn:hover {
+            color: var(--text-primary);
+        }
     </style>
 </head>
+
 <body>
     <div class="panel-layout">
         <!-- Top Bar -->
@@ -248,7 +307,8 @@
                 <button class="demo-mode-btn" id="demo-url-btn" onclick="promptDemoUrl()">
                     <i class="fas fa-globe"></i> Mostrar URL
                 </button>
-                <div id="demo-url-display" style="font-size:11px;color:var(--text-secondary);margin-top:4px;display:none;">
+                <div id="demo-url-display"
+                    style="font-size:11px;color:var(--text-secondary);margin-top:4px;display:none;">
                     URL: <span id="demo-current-url"></span>
                 </div>
             </div>
@@ -404,7 +464,7 @@
         }
 
         function toggleFullscreen() {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => { });
             else document.exitFullscreen();
         }
 
@@ -420,4 +480,5 @@
         setInterval(pollSlide, 1000);
     </script>
 </body>
+
 </html>

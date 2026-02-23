@@ -1,101 +1,101 @@
 {
-  "1": {
-    "title": "Introducción",
-    "points": [
-      "Presentarse al público",
-      "Contexto del proyecto",
-      "Agradecer la atención"
-    ],
-    "time": "~1 min"
-  },
-  "2": {
-    "title": "Problema",
-    "points": [
-      "Describir la problemática",
-      "Datos y estadísticas relevantes",
-      "Impacto en los usuarios"
-    ],
-    "time": "~2 min"
-  },
-  "3": {
-    "title": "Solución Propuesta",
-    "points": [
-      "Visión general de la solución",
-      "Propuesta de valor",
-      "Diferenciadores clave"
-    ],
-    "time": "~2 min"
-  },
-  "4": {
-    "title": "Arquitectura",
-    "points": [
-      "Stack tecnológico",
-      "Diagrama de arquitectura",
-      "Decisiones de diseño"
-    ],
-    "time": "~3 min"
-  },
-  "5": {
-    "title": "Funcionalidades Core",
-    "points": [
-      "Feature principal #1",
-      "Feature principal #2",
-      "Feature principal #3"
-    ],
-    "time": "~3 min"
-  },
-  "6": {
-    "title": "Demo en Vivo",
-    "points": [
-      "Preparar demo",
-      "Mostrar flujo principal",
-      "Interacción en tiempo real"
-    ],
-    "time": "~5 min"
-  },
-  "7": {
-    "title": "Modelo de Datos",
-    "points": [
-      "Esquema de base de datos",
-      "Relaciones principales",
-      "Estrategia de caché"
-    ],
-    "time": "~2 min"
-  },
-  "8": {
-    "title": "API & Integración",
-    "points": [
-      "Endpoints principales",
-      "Formato de respuesta",
-      "Autenticación y seguridad"
-    ],
-    "time": "~2 min"
-  },
-  "9": {
-    "title": "Testing & QA",
-    "points": [
-      "Estrategia de testing",
-      "Cobertura de código",
-      "Pruebas de integración"
-    ],
-    "time": "~2 min"
-  },
-  "10": {
-    "title": "Deployment",
-    "points": [
-      "Pipeline CI/CD",
-      "Infraestructura",
-      "Monitoreo y logs"
-    ],
-    "time": "~2 min"
-  },
-  "11": {
-    "title": "Cierre & Preguntas",
-    "points": [
-      "Resumen de puntos clave",
-      "Próximos pasos",
-      "Espacio para preguntas"
-    ],
-    "time": "~3 min"
-  }
+    "1": {
+        "title": "Introducción",
+        "points": [
+            "Presentarse al público",
+            "Contexto del proyecto",
+            "Agradecer la atención"
+        ],
+        "time": "~1 min"
+    },
+    "2": {
+        "title": "Problema",
+        "points": [
+            "Describir la problemática",
+            "Datos y estadísticas relevantes",
+            "Impacto en los usuarios"
+        ],
+        "time": "~2 min"
+    },
+    "3": {
+        "title": "Solución Propuesta",
+        "points": [
+            "Visión general de la solución",
+            "Propuesta de valor",
+            "Diferenciadores clave"
+        ],
+        "time": "~2 min"
+    },
+    "4": {
+        "title": "Arquitectura",
+        "points": [
+            "Stack tecnológico",
+            "Diagrama de arquitectura",
+            "Decisiones de diseño"
+        ],
+        "time": "~3 min"
+    },
+    "5": {
+        "title": "Funcionalidades Core",
+        "points": [
+            "Feature principal #1",
+            "Feature principal #2",
+            "Feature principal #3"
+        ],
+        "time": "~3 min"
+    },
+    "6": {
+        "title": "Demo en Vivo",
+        "points": [
+            "Preparar demo",
+            "Mostrar flujo principal",
+            "Interacción en tiempo real"
+        ],
+        "time": "~5 min"
+    },
+    "7": {
+        "title": "Modelo de Datos",
+        "points": [
+            "Esquema de base de datos",
+            "Relaciones principales",
+            "Estrategia de caché"
+        ],
+        "time": "~2 min"
+    },
+    "8": {
+        "title": "API & Integración",
+        "points": [
+            "Endpoints principales",
+            "Formato de respuesta",
+            "Autenticación y seguridad"
+        ],
+        "time": "~2 min"
+    },
+    "9": {
+        "title": "Testing & QA",
+        "points": [
+            "Estrategia de testing",
+            "Cobertura de código",
+            "Pruebas de integración"
+        ],
+        "time": "~2 min"
+    },
+    "10": {
+        "title": "Deployment",
+        "points": [
+            "Pipeline CI/CD",
+            "Infraestructura",
+            "Monitoreo y logs"
+        ],
+        "time": "~2 min"
+    },
+    "11": {
+        "title": "Cierre & Preguntas",
+        "points": [
+            "Resumen de puntos clave",
+            "Próximos pasos",
+            "Espacio para preguntas"
+        ],
+        "time": "~3 min"
+    }
 }

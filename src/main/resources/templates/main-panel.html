@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncSlide — Panel de Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        :root {
+            --bg-primary: #0b0f1a;
+            --bg-card: #111827;
+            --bg-surface: #1e293b;
+            --emerald: #34d399;
+            --cyan: #22d3ee;
+            --blue: #60a5fa;
+            --purple: #a78bfa;
+            --amber: #fbbf24;
+            --rose: #fb7185;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .panel-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+
+        /* ─── Top Bar ────────────────────────────────────── */
+        .top-bar {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--bg-surface);
+        }
+        .top-bar .brand {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--emerald);
+        }
+        .top-bar .slide-badge {
+            background: var(--bg-surface);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* ─── Thumbnails Grid ────────────────────────────── */
+        .thumbnails-section {
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .thumbnails-section h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .thumb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .thumb-card {
+            background: var(--bg-card);
+            border: 2px solid var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .thumb-card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-2px);
+        }
+        .thumb-card.active {
+            border-color: var(--emerald);
+            box-shadow: 0 0 16px rgba(52, 211, 153, 0.2);
+        }
+        .thumb-card img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: #000;
+        }
+        .thumb-card .thumb-number {
+            position: absolute;
+            top: 6px;
+            left: 8px;
+            background: rgba(0,0,0,0.7);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .thumb-card .thumb-title {
+            padding: 6px 10px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ─── Links Panel ────────────────────────────────── */
+        .links-panel {
+            background: var(--bg-card);
+            border-left: 1px solid var(--bg-surface);
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .link-group {
+            margin-bottom: 20px;
+        }
+        .link-group-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: var(--bg-surface);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .link-item:hover {
+            background: rgba(52, 211, 153, 0.1);
+            border-left: 3px solid var(--emerald);
+        }
+        .link-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .link-icon.emerald { background: rgba(52,211,153,0.15); color: var(--emerald); }
+        .link-icon.cyan { background: rgba(34,211,238,0.15); color: var(--cyan); }
+        .link-icon.blue { background: rgba(96,165,250,0.15); color: var(--blue); }
+        .link-icon.purple { background: rgba(167,139,250,0.15); color: var(--purple); }
+        .link-icon.amber { background: rgba(251,191,36,0.15); color: var(--amber); }
+        .link-icon.rose { background: rgba(251,113,133,0.15); color: var(--rose); }
+        .link-icon.slate { background: rgba(148,163,184,0.15); color: var(--text-secondary); }
+        .link-info .link-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .link-info .link-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* ─── Demo Controls ──────────────────────────────── */
+        .demo-controls {
+            margin-top: 16px;
+            padding: 12px;
+            background: var(--bg-surface);
+            border-radius: 10px;
+        }
+        .demo-controls h4 {
+            font-size: 13px;
+            color: var(--cyan);
+            margin-bottom: 8px;
+        }
+        .demo-mode-btn {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--bg-card);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            margin-bottom: 6px;
+            transition: all 0.15s;
+        }
+        .demo-mode-btn.active {
+            border-color: var(--emerald);
+            color: var(--emerald);
+        }
+        .demo-mode-btn:hover { color: var(--text-primary); }
+    </style>
+</head>
+<body>
+    <div class="panel-layout">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="brand"><i class="fas fa-tablet-alt"></i> SyncSlide Master Panel</div>
+            <div style="display:flex;gap:12px;align-items:center;">
+                <button class="btn btn-sm btn-outline-light" onclick="prevSlide()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="slide-badge" id="slide-badge">1 / --</div>
+                <button class="btn btn-sm btn-outline-light" onclick="nextSlide()">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button class="btn btn-sm btn-outline-secondary" onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnails-section">
+            <h3><i class="fas fa-th"></i> Slides</h3>
+            <div class="thumb-grid" id="thumb-grid"></div>
+        </div>
+
+        <!-- Links Panel -->
+        <div class="links-panel" id="links-panel">
+            <div class="demo-controls">
+                <h4><i class="fas fa-desktop"></i> Modo Demo (/demo)</h4>
+                <button class="demo-mode-btn active" id="demo-slides-btn" onclick="setDemoMode('slides')">
+                    <i class="fas fa-images"></i> Mostrar Slides
+                </button>
+                <button class="demo-mode-btn" id="demo-url-btn" onclick="promptDemoUrl()">
+                    <i class="fas fa-globe"></i> Mostrar URL
+                </button>
+                <div id="demo-url-display" style="font-size:11px;color:var(--text-secondary);margin-top:4px;display:none;">
+                    URL: <span id="demo-current-url"></span>
+                </div>
+            </div>
+            <div id="link-groups"></div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        const TOTAL_SLIDES = /*[[${totalSlides}]]*/ 11;
+    </script>
+    <script>
+        let currentSlide = 1;
+        let demoLinks = {};
+        let presenterNotes = {};
+
+        const slideBadge = document.getElementById('slide-badge');
+        const thumbGrid = document.getElementById('thumb-grid');
+        const linkGroups = document.getElementById('link-groups');
+
+        // ─── Load Config ────────────────────────────────────
+        async function loadConfig() {
+            try {
+                const res = await fetch('/api/config');
+                const data = await res.json();
+                demoLinks = data.demoLinks || {};
+                presenterNotes = data.presenterNotes || {};
+                buildThumbnails();
+                buildLinks();
+                updateUI();
+            } catch (e) {
+                console.error('Config load error:', e);
+            }
+        }
+
+        function buildThumbnails() {
+            thumbGrid.innerHTML = '';
+            for (let i = 1; i <= TOTAL_SLIDES; i++) {
+                const note = presenterNotes[String(i)] || {};
+                const card = document.createElement('div');
+                card.className = 'thumb-card';
+                card.dataset.slide = i;
+                card.onclick = () => goToSlide(i);
+                card.innerHTML = `
+                    <img src="/presentation/Slide${i}.PNG" alt="Slide ${i}" loading="lazy">
+                    <span class="thumb-number">${i}</span>
+                    <div class="thumb-title">${note.title || 'Slide ' + i}</div>
+                `;
+                thumbGrid.appendChild(card);
+            }
+        }
+
+        function buildLinks() {
+            linkGroups.innerHTML = '';
+            const groups = demoLinks.groups || [];
+            groups.forEach(group => {
+                const div = document.createElement('div');
+                div.className = 'link-group';
+                div.innerHTML = `<div class="link-group-title">${group.title}</div>`;
+                (group.links || []).forEach(link => {
+                    const item = document.createElement('a');
+                    item.className = 'link-item';
+                    item.href = '#';
+                    item.onclick = (e) => { e.preventDefault(); openDemoUrl(link.url); };
+                    item.innerHTML = `
+                        <div class="link-icon ${link.iconColor || 'emerald'}">
+                            <i class="${link.icon || 'fas fa-link'}"></i>
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">${link.title}</div>
+                            <div class="link-desc">${link.description || link.url}</div>
+                        </div>
+                    `;
+                    div.appendChild(item);
+                });
+                linkGroups.appendChild(div);
+            });
+        }
+
+        function updateUI() {
+            slideBadge.textContent = `${currentSlide} / ${TOTAL_SLIDES}`;
+            document.querySelectorAll('.thumb-card').forEach((card, idx) => {
+                card.classList.toggle('active', idx + 1 === currentSlide);
+            });
+        }
+
+        // ─── API ────────────────────────────────────────────
+        async function goToSlide(n) {
+            const res = await fetch('/api/slide', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slide: n })
+            });
+            const data = await res.json();
+            currentSlide = data.slide;
+            updateUI();
+            // Scroll to active thumbnail
+            const active = document.querySelector('.thumb-card.active');
+            if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        async function nextSlide() {
+            const res = await fetch('/api/slide/next', { method: 'POST' });
+            const data = await res.json();
+            currentSlide = data.slide;
+            updateUI();
+        }
+
+        async function prevSlide() {
+            const res = await fetch('/api/slide/prev', { method: 'POST' });
+            const data = await res.json();
+            currentSlide = data.slide;
+            updateUI();
+        }
+
+        async function pollSlide() {
+            try {
+                const res = await fetch('/api/slide');
+                const data = await res.json();
+                if (data.slide !== currentSlide) {
+                    currentSlide = data.slide;
+                    updateUI();
+                }
+            } catch (e) { /* silent */ }
+        }
+
+        // ─── Demo Mode ─────────────────────────────────────
+        async function setDemoMode(mode) {
+            await fetch('/api/demo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: 'slides' })
+            });
+            document.getElementById('demo-slides-btn').classList.add('active');
+            document.getElementById('demo-url-btn').classList.remove('active');
+            document.getElementById('demo-url-display').style.display = 'none';
+        }
+
+        async function openDemoUrl(url) {
+            await fetch('/api/demo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: 'url', url: url })
+            });
+            document.getElementById('demo-slides-btn').classList.remove('active');
+            document.getElementById('demo-url-btn').classList.add('active');
+            document.getElementById('demo-url-display').style.display = 'block';
+            document.getElementById('demo-current-url').textContent = url;
+        }
+
+        function promptDemoUrl() {
+            const url = prompt('Ingrese URL para mostrar en /demo:', '/');
+            if (url) openDemoUrl(url);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+            else document.exitFullscreen();
+        }
+
+        // ─── Keyboard ──────────────────────────────────────
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+            else if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+        });
+
+        // ─── Init ───────────────────────────────────────────
+        loadConfig();
+        setInterval(pollSlide, 1000);
+    </script>
+</body>
+</html>

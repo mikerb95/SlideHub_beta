@@ -1,0 +1,49 @@
+# ═══════════════════════════════════════════════════════════
+# SyncSlide - Presentation Control System
+# Default Configuration
+# ═══════════════════════════════════════════════════════════
+
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: SyncSlide
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false
+    encoding: UTF-8
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=3600s
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+# ─── SyncSlide Custom Config ─────────────────────────────
+syncslide:
+  slides-dir: static/presentation
+  presenter-notes-path: config/presenter-notes.json
+  demo-links-path: config/demo-links.json
+  polling-interval-ms: 1000
+
+# ─── Actuator ────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    com.syncslide: INFO
+    org.springframework: INFO

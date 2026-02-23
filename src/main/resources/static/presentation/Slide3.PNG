@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#0b0f1a"/>
+  <rect x="60" y="60" width="1800" height="960" rx="20" fill="#111827" stroke="#1e293b" stroke-width="2"/>
+  <text x="960" y="500" text-anchor="middle" font-family="Inter, sans-serif" font-size="72" font-weight="700" fill="#34d399">Slide 3</text>
+  <text x="960" y="580" text-anchor="middle" font-family="Inter, sans-serif" font-size="28" fill="#94a3b8">Placeholder — Replace with your presentation slides</text>
+  <text x="960" y="640" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" fill="#475569">SyncSlide Presentation System</text>
+</svg>

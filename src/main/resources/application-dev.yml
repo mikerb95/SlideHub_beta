@@ -1,0 +1,18 @@
+# ═══════════════════════════════════════════════════════════
+# SyncSlide - Development Profile
+# ═══════════════════════════════════════════════════════════
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    com.syncslide: DEBUG
+    org.springframework.web: DEBUG

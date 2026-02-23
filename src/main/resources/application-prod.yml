@@ -1,0 +1,15 @@
+# ═══════════════════════════════════════════════════════════
+# SyncSlide - Production Profile
+# ═══════════════════════════════════════════════════════════
+
+spring:
+  thymeleaf:
+    cache: true
+
+  cache:
+    type: caffeine
+
+logging:
+  level:
+    com.syncslide: WARN
+    org.springframework: WARN

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SyncSlide — Control Remoto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        :root {
+            --bg-primary: #0b0f1a;
+            --bg-card: #111827;
+            --bg-surface: #1e293b;
+            --emerald: #34d399;
+            --cyan: #22d3ee;
+            --blue: #60a5fa;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        /* Header */
+        .remote-header {
+            padding: 20px 16px 12px;
+            text-align: center;
+        }
+        .remote-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--emerald);
+        }
+        .remote-header .slide-info {
+            font-size: 42px;
+            font-weight: 700;
+            margin: 12px 0 4px;
+        }
+        .remote-header .slide-total {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Progress dots */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            flex-wrap: wrap;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .dot.active {
+            background: var(--emerald);
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+            transform: scale(1.3);
+        }
+        .dot.past {
+            background: rgba(52, 211, 153, 0.3);
+        }
+
+        /* Navigation area */
+        .nav-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 20px 16px;
+        }
+        .nav-btn {
+            width: 100%;
+            max-width: 160px;
+            aspect-ratio: 1;
+            border-radius: 20px;
+            border: 2px solid var(--bg-surface);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .nav-btn:active {
+            transform: scale(0.93);
+            background: var(--bg-surface);
+            border-color: var(--emerald);
+        }
+        .nav-btn.prev { color: var(--cyan); }
+        .nav-btn.next { color: var(--emerald); }
+
+        /* Quick nav */
+        .quick-nav {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .quick-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--bg-surface);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .quick-btn.active {
+            background: var(--emerald);
+            color: var(--bg-primary);
+            border-color: var(--emerald);
+        }
+        .quick-btn:active { transform: scale(0.9); }
+
+        /* Footer bar */
+        .footer-bar {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--bg-surface);
+        }
+        .footer-bar .status {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .footer-bar .status .dot-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--emerald);
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .fullscreen-btn {
+            background: none;
+            border: 1px solid var(--bg-surface);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Swipe overlay */
+        #swipe-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 100;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="remote-header">
+        <h1><i class="fas fa-satellite-dish"></i> SyncSlide Remote</h1>
+        <div class="slide-info" id="slide-current">1</div>
+        <div class="slide-total">de <span id="slide-total-text"></span> slides</div>
+    </div>
+
+    <div class="progress-dots" id="progress-dots"></div>
+
+    <div class="nav-area" id="nav-area">
+        <button class="nav-btn prev" id="btn-prev" aria-label="Anterior">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-btn next" id="btn-next" aria-label="Siguiente">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <div class="quick-nav" id="quick-nav"></div>
+
+    <div class="footer-bar">
+        <div class="status">
+            <span class="dot-indicator"></span>
+            <span id="status-text">Conectado</span>
+        </div>
+        <button class="fullscreen-btn" onclick="toggleFullscreen()">
+            <i class="fas fa-expand"></i> Fullscreen
+        </button>
+    </div>
+
+    <div id="swipe-overlay"></div>
+
+    <script th:inline="javascript">
+        const TOTAL_SLIDES = /*[[${totalSlides}]]*/ 11;
+    </script>
+    <script>
+        let currentSlide = 1;
+        const slideCurrent = document.getElementById('slide-current');
+        const slideTotalText = document.getElementById('slide-total-text');
+        const progressDots = document.getElementById('progress-dots');
+        const quickNav = document.getElementById('quick-nav');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const statusText = document.getElementById('status-text');
+
+        slideTotalText.textContent = TOTAL_SLIDES;
+
+        // ─── Build UI ───────────────────────────────────────
+        function buildDots() {
+            progressDots.innerHTML = '';
+            for (let i = 1; i <= TOTAL_SLIDES; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.dataset.slide = i;
+                dot.addEventListener('click', () => goToSlide(i));
+                progressDots.appendChild(dot);
+            }
+        }
+
+        function buildQuickNav() {
+            quickNav.innerHTML = '';
+            for (let i = 1; i <= TOTAL_SLIDES; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'quick-btn';
+                btn.textContent = i;
+                btn.addEventListener('click', () => goToSlide(i));
+                quickNav.appendChild(btn);
+            }
+        }
+
+        function updateUI() {
+            slideCurrent.textContent = currentSlide;
+
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, idx) => {
+                dot.classList.remove('active', 'past');
+                const slideNum = idx + 1;
+                if (slideNum === currentSlide) dot.classList.add('active');
+                else if (slideNum < currentSlide) dot.classList.add('past');
+            });
+
+            // Update quick nav
+            document.querySelectorAll('.quick-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx + 1 === currentSlide);
+            });
+        }
+
+        // ─── API ────────────────────────────────────────────
+        async function goToSlide(n) {
+            try {
+                const res = await fetch('/api/slide', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slide: n })
+                });
+                const data = await res.json();
+                currentSlide = data.slide;
+                updateUI();
+                vibrate();
+            } catch (e) {
+                statusText.textContent = 'Error de conexión';
+            }
+        }
+
+        async function nextSlide() {
+            try {
+                const res = await fetch('/api/slide/next', { method: 'POST' });
+                const data = await res.json();
+                currentSlide = data.slide;
+                updateUI();
+                vibrate();
+            } catch (e) {
+                statusText.textContent = 'Error de conexión';
+            }
+        }
+
+        async function prevSlide() {
+            try {
+                const res = await fetch('/api/slide/prev', { method: 'POST' });
+                const data = await res.json();
+                currentSlide = data.slide;
+                updateUI();
+                vibrate();
+            } catch (e) {
+                statusText.textContent = 'Error de conexión';
+            }
+        }
+
+        async function pollSlide() {
+            try {
+                const res = await fetch('/api/slide');
+                const data = await res.json();
+                if (data.slide !== currentSlide) {
+                    currentSlide = data.slide;
+                    updateUI();
+                }
+                statusText.textContent = 'Conectado';
+            } catch (e) {
+                statusText.textContent = 'Sin conexión';
+            }
+        }
+
+        // ─── Haptic Feedback ────────────────────────────────
+        function vibrate() {
+            if (navigator.vibrate) navigator.vibrate(30);
+        }
+
+        // ─── Events ────────────────────────────────────────
+        btnPrev.addEventListener('click', prevSlide);
+        btnNext.addEventListener('click', nextSlide);
+
+        // Swipe gesture support
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const navArea = document.getElementById('nav-area');
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+                if (dx < 0) nextSlide();
+                else prevSlide();
+            }
+        }, { passive: true });
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+            else if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+        });
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // ─── Init ───────────────────────────────────────────
+        buildDots();
+        buildQuickNav();
+        pollSlide().then(updateUI);
+        setInterval(pollSlide, 800);
+    </script>
+</body>
+</html>

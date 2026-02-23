@@ -1,0 +1,58 @@
+/* ═══════════════════════════════════════════════════════════
+   SyncSlide — Common Styles
+   Shared CSS variables and utilities across all views
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+    --bg-primary: #0b0f1a;
+    --bg-card: #111827;
+    --bg-surface: #1e293b;
+    --emerald: #34d399;
+    --cyan: #22d3ee;
+    --blue: #60a5fa;
+    --purple: #a78bfa;
+    --amber: #fbbf24;
+    --rose: #fb7185;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-surface);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+/* Selection */
+::selection {
+    background: rgba(52, 211, 153, 0.3);
+    color: var(--text-primary);
+}
+
+/* Focus visible */
+:focus-visible {
+    outline: 2px solid var(--emerald);
+    outline-offset: 2px;
+}
+
+/* Utility: hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

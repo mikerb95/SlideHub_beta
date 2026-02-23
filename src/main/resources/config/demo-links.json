@@ -1,0 +1,75 @@
+{
+  "groups": [
+    {
+      "title": "🖥️ Demo en vivo",
+      "links": [
+        {
+          "url": "/",
+          "icon": "fas fa-home",
+          "iconColor": "emerald",
+          "title": "Página Principal",
+          "description": "Landing page del proyecto"
+        },
+        {
+          "url": "/showcase",
+          "icon": "fas fa-book-open",
+          "iconColor": "cyan",
+          "title": "Showcase",
+          "description": "Documentación y demo interactiva"
+        }
+      ]
+    },
+    {
+      "title": "📊 Vistas del Sistema",
+      "links": [
+        {
+          "url": "/slides",
+          "icon": "fas fa-tv",
+          "iconColor": "blue",
+          "title": "Pantalla Proyector",
+          "description": "Vista fullscreen para proyectar"
+        },
+        {
+          "url": "/remote",
+          "icon": "fas fa-mobile-alt",
+          "iconColor": "emerald",
+          "title": "Control Remoto",
+          "description": "Control remoto desde smartphone"
+        },
+        {
+          "url": "/presenter",
+          "icon": "fas fa-chalkboard-teacher",
+          "iconColor": "purple",
+          "title": "Vista Presentador",
+          "description": "Notas del presentador y timer"
+        },
+        {
+          "url": "/demo",
+          "icon": "fas fa-window-maximize",
+          "iconColor": "amber",
+          "title": "Pantalla Demo",
+          "description": "Modo dual: slides + iframe"
+        }
+      ]
+    },
+    {
+      "title": "🔗 API Endpoints",
+      "links": [
+        {
+          "url": "/api/slide",
+          "icon": "fas fa-code",
+          "iconColor": "rose",
+          "title": "API Slide",
+          "description": "GET/POST slide actual"
+        },
+        {
+          "url": "/api/config",
+          "icon": "fas fa-cog",
+          "iconColor": "slate",
+          "title": "API Config",
+          "description": "Configuración del sistema"
+        }
+      ]
+    }
+  ]
+}

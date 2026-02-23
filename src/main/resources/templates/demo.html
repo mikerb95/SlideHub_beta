@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyncSlide — Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        :root {
+            --bg-primary: #0b0f1a;
+            --emerald: #34d399;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Slide mode */
+        #slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #slide-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: opacity 0.3s ease;
+        }
+
+        /* URL mode */
+        #iframe-container {
+            width: 100vw;
+            height: 100vh;
+            display: none;
+        }
+        #iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Mode indicator */
+        .mode-indicator {
+            position: fixed;
+            top: 8px;
+            right: 12px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.2);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Transition overlay */
+        .transition-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #000;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .transition-overlay.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="slide-container">
+        <img id="slide-img" src="/presentation/Slide1.PNG" alt="Slide">
+    </div>
+    <div id="iframe-container">
+        <iframe id="demo-iframe" src="about:blank" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+    </div>
+    <div class="mode-indicator" id="mode-indicator">SLIDES</div>
+    <div class="transition-overlay" id="transition"></div>
+
+    <script th:inline="javascript">
+        const TOTAL_SLIDES = /*[[${totalSlides}]]*/ 11;
+    </script>
+    <script>
+        let currentSlide = 1;
+        let currentMode = 'slides';
+
+        const slideContainer = document.getElementById('slide-container');
+        const iframeContainer = document.getElementById('iframe-container');
+        const slideImg = document.getElementById('slide-img');
+        const demoIframe = document.getElementById('demo-iframe');
+        const modeIndicator = document.getElementById('mode-indicator');
+        const transition = document.getElementById('transition');
+
+        function switchMode(mode, url) {
+            if (mode === currentMode && mode === 'slides') return;
+
+            // Smooth transition
+            transition.classList.add('active');
+            setTimeout(() => {
+                if (mode === 'slides') {
+                    slideContainer.style.display = 'flex';
+                    iframeContainer.style.display = 'none';
+                    modeIndicator.textContent = 'SLIDES';
+                    updateSlideImage();
+                } else if (mode === 'url' && url) {
+                    slideContainer.style.display = 'none';
+                    iframeContainer.style.display = 'block';
+                    demoIframe.src = url;
+                    modeIndicator.textContent = 'DEMO: ' + url;
+                }
+                currentMode = mode;
+                setTimeout(() => transition.classList.remove('active'), 100);
+            }, 300);
+        }
+
+        function updateSlideImage() {
+            slideImg.src = `/presentation/Slide${currentSlide}.PNG`;
+        }
+
+        // ─── Polling ────────────────────────────────────────
+        async function pollDemo() {
+            try {
+                // Poll slide state
+                const slideRes = await fetch('/api/slide');
+                const slideData = await slideRes.json();
+                if (slideData.slide !== currentSlide) {
+                    currentSlide = slideData.slide;
+                    if (currentMode === 'slides') updateSlideImage();
+                }
+
+                // Poll demo mode
+                const demoRes = await fetch('/api/demo');
+                const demoData = await demoRes.json();
+                if (demoData.mode !== currentMode ||
+                    (demoData.mode === 'url' && demoIframe.src !== new URL(demoData.url, location.origin).href)) {
+                    switchMode(demoData.mode, demoData.url);
+                }
+            } catch (e) {
+                console.warn('Poll error:', e);
+            }
+        }
+
+        // ─── Keyboard ──────────────────────────────────────
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' || e.key === 'F') {
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+                else document.exitFullscreen();
+            }
+        });
+
+        // ─── Init ───────────────────────────────────────────
+        updateSlideImage();
+        pollDemo();
+        setInterval(pollDemo, 1000);
+    </script>
+</body>
+</html>
